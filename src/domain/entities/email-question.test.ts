@@ -6,7 +6,7 @@ describe('EmailQuestion', () => {
     const props = {
       surveyId: '123',
       title: 'Qual o seu melhor email?',
-      description: 'Precisamos saber so seu nome para a pesquisa.',
+      description: 'description.',
       order: 1,
       required: true,
     };
@@ -29,8 +29,8 @@ describe('EmailQuestion', () => {
     const props = {
       id: '123',
       surveyId: '123',
-      title: 'Qual o seu nome?',
-      description: 'Precisamos saber so seu nome para a pesquisa.',
+      title: 'Qual o seu melhor email?',
+      description: 'description.',
       order: 1,
       maxLength: 64,
       minLength: 16,
