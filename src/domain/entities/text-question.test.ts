@@ -66,6 +66,7 @@ describe('TextQuestion', () => {
     expect(question.title).toBe(props.title);
     expect(question.description).toBe(props.description);
     expect(question.order).toBe(props.order);
+    expect(question.type).toBe(QuestionType.TEXT);
     expect(question.minLength).toBe(props.minLength);
     expect(question.maxLength).toBe(props.maxLength);
     expect(question.required).toBe(props.required);

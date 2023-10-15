@@ -16,7 +16,7 @@ interface Props {
 
 export type QuestionProps = Optional<Props, 'required' | 'description'>;
 
-export abstract class Question<T> {
+export abstract class Question<T = unknown> {
   protected props: Props & T;
 
   protected constructor(props: QuestionProps & T) {
