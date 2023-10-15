@@ -1,6 +1,5 @@
 export enum QuestionType {
   TEXT = 'text',
-  TEXTAREA = 'textarea',
   NUMBER = 'number',
   EMAIL = 'email',
   COLOR = 'color',

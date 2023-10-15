@@ -1,13 +1,18 @@
 import { Question, QuestionProps } from './question';
 import { QuestionType } from '../enums/question-type';
 import { randomUUID } from 'crypto';
+import { Optional } from '@/core/types/optional';
 
 interface Props {
+  isLongText: boolean;
   minLength?: number;
   maxLength?: number;
 }
 
-type TextQuestionProps = Omit<QuestionProps & Props, 'type'>;
+type TextQuestionProps = Optional<
+  Omit<QuestionProps & Props, 'type'>,
+  'isLongText'
+>;
 
 type NewInstance = Omit<
   TextQuestionProps,
@@ -18,6 +23,7 @@ export class TextQuestion extends Question<Props> {
   private constructor(props: TextQuestionProps) {
     super({
       ...props,
+      isLongText: props.isLongText ?? false,
       type: QuestionType.TEXT,
     });
   }
@@ -43,6 +49,10 @@ export class TextQuestion extends Question<Props> {
     return this.props.maxLength;
   }
 
+  get isLongText() {
+    return this.props.isLongText;
+  }
+
   changeMinLength(minLength?: number) {
     this.props.minLength = minLength;
     this.touch();
@@ -50,6 +60,11 @@ export class TextQuestion extends Question<Props> {
 
   changeMaxLength(maxLength?: number) {
     this.props.maxLength = maxLength;
+    this.touch();
+  }
+
+  changeIsLongText(isLongText: boolean) {
+    this.props.isLongText = isLongText;
     this.touch();
   }
 }

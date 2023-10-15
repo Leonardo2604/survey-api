@@ -19,6 +19,7 @@ describe('TextQuestion', () => {
     expect(question.surveyId).toBe(props.surveyId);
     expect(question.title).toBe(props.title);
     expect(question.type).toBe(QuestionType.TEXT);
+    expect(question.isLongText).toBeFalsy();
     expect(question.description).toBe(props.description);
     expect(question.order).toBe(props.order);
     expect(question.minLength).toBe(props.minLength);
@@ -51,6 +52,7 @@ describe('TextQuestion', () => {
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,
+      isLongText: true,
       maxLength: 64,
       minLength: 16,
       required: true,
@@ -66,6 +68,7 @@ describe('TextQuestion', () => {
     expect(question.title).toBe(props.title);
     expect(question.description).toBe(props.description);
     expect(question.order).toBe(props.order);
+    expect(question.isLongText).toBeTruthy();
     expect(question.type).toBe(QuestionType.TEXT);
     expect(question.minLength).toBe(props.minLength);
     expect(question.maxLength).toBe(props.maxLength);
@@ -200,6 +203,33 @@ describe('TextQuestion', () => {
     question.changeMaxLength(newMaxLength);
 
     expect(question.maxLength).toBe(newMaxLength);
+    expect(question.updatedAt.getTime()).toBeGreaterThan(
+      props.updatedAt.getTime(),
+    );
+  });
+
+  it('Should be able to change the text question is long text', () => {
+    const pastDate = new Date();
+    pastDate.setHours(pastDate.getHours() - 3);
+
+    const props = {
+      id: '123',
+      surveyId: '123',
+      title: 'Qual o seu nome?',
+      description: 'description.',
+      order: 1,
+      maxLength: 64,
+      minLength: 16,
+      required: true,
+      createdAt: pastDate,
+      updatedAt: pastDate,
+    };
+
+    const question = TextQuestion.restore(props);
+
+    question.changeIsLongText(true);
+
+    expect(question.isLongText).toBeTruthy();
     expect(question.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );
