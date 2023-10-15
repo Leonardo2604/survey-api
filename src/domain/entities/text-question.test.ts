@@ -195,11 +195,11 @@ describe('TextQuestion', () => {
 
     const question = TextQuestion.restore(props);
 
-    const newManLength = 80;
+    const newMaxLength = 80;
 
-    question.changeMaxLength(newManLength);
+    question.changeMaxLength(newMaxLength);
 
-    expect(question.maxLength).toBe(newManLength);
+    expect(question.maxLength).toBe(newMaxLength);
     expect(question.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );

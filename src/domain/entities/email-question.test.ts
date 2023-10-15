@@ -1,7 +1,7 @@
 import { QuestionType } from '../enums/question-type';
 import { EmailQuestion } from './email-question';
 
-describe('TextQuestion', () => {
+describe('EmailQuestion', () => {
   it('Should be able to create a email question', () => {
     const props = {
       surveyId: '123',
