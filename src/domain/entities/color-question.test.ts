@@ -1,22 +1,22 @@
 import { QuestionType } from '../enums/question-type';
-import { EmailQuestion } from './email-question';
+import { ColorQuestion } from './color-question';
 
-describe('EmailQuestion', () => {
-  it('Should be able to create a email question', () => {
+describe('ColorQuestion', () => {
+  it('Should be able to create a color question', () => {
     const props = {
       surveyId: '123',
-      title: 'Qual o seu melhor email?',
+      title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
       order: 1,
       required: true,
     };
 
-    const question = EmailQuestion.create(props);
+    const question = ColorQuestion.create(props);
 
     expect(question.id).toBeDefined();
     expect(question.surveyId).toBe(props.surveyId);
     expect(question.title).toBe(props.title);
-    expect(question.type).toBe(QuestionType.EMAIL);
+    expect(question.type).toBe(QuestionType.COLOR);
     expect(question.description).toBe(props.description);
     expect(question.order).toBe(props.order);
     expect(question.required).toBe(props.required);
@@ -25,11 +25,11 @@ describe('EmailQuestion', () => {
     expect(question.deletedAt).toBeUndefined();
   });
 
-  it('Should be able to restore a email question', () => {
+  it('Should be able to restore a color question', () => {
     const props = {
       id: '123',
       surveyId: '123',
-      title: 'Qual o seu melhor email?',
+      title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
       order: 1,
       required: true,
@@ -38,12 +38,12 @@ describe('EmailQuestion', () => {
       deletedAt: new Date(),
     };
 
-    const question = EmailQuestion.restore(props);
+    const question = ColorQuestion.restore(props);
 
     expect(question.id).toBe(props.id);
     expect(question.surveyId).toBe(props.surveyId);
     expect(question.title).toBe(props.title);
-    expect(question.type).toBe(QuestionType.EMAIL);
+    expect(question.type).toBe(QuestionType.COLOR);
     expect(question.description).toBe(props.description);
     expect(question.order).toBe(props.order);
     expect(question.required).toBe(props.required);
