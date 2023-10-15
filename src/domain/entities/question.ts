@@ -1,39 +1,38 @@
-import { randomUUID } from 'node:crypto';
+import { Optional } from '@/core/types/optional';
+import { QuestionType } from '../enums/question-type';
 
 interface Props {
   id: string;
+  surveyId: string;
   title: string;
   description: string;
-  isClosed: boolean;
+  type: QuestionType;
+  order: number;
+  required: boolean;
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
 }
 
-type NewInstance = Omit<
-  Props,
-  'id' | 'isClosed' | 'createdAt' | 'updatedAt' | 'deletedAt'
->;
+export type QuestionProps = Optional<Props, 'required' | 'description'>;
 
-export class Survey {
-  private props: Props;
+export abstract class Question<T> {
+  protected props: Props & T;
 
-  private constructor(props: Props) {
-    this.props = { ...props };
-  }
-
-  static create(props: NewInstance) {
-    return new Survey({
+  protected constructor(props: QuestionProps & T) {
+    this.props = {
       ...props,
-      id: randomUUID(),
-      isClosed: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+      description: props.description ?? '',
+      required: props.required ?? false,
+    };
   }
 
   get id() {
     return this.props.id;
+  }
+
+  get surveyId() {
+    return this.props.surveyId;
   }
 
   get title() {
@@ -44,12 +43,16 @@ export class Survey {
     return this.props.description;
   }
 
-  get isClosed() {
-    return this.props.isClosed;
+  get type() {
+    return this.props.type;
   }
 
-  get isOpen() {
-    return !this.props.isClosed;
+  get order() {
+    return this.props.order;
+  }
+
+  get required() {
+    return this.props.required;
   }
 
   get createdAt() {
@@ -64,22 +67,8 @@ export class Survey {
     return this.props.deletedAt;
   }
 
-  static restore(props: Props) {
-    return new Survey(props);
-  }
-
-  private touch() {
+  protected touch() {
     this.props.updatedAt = new Date();
-  }
-
-  open() {
-    this.props.isClosed = false;
-    this.touch();
-  }
-
-  close() {
-    this.props.isClosed = true;
-    this.touch();
   }
 
   delete() {

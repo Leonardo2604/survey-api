@@ -13,6 +13,7 @@ describe('Survey', () => {
     expect(survey.title).toBe(props.title);
     expect(survey.description).toBe(props.description);
     expect(survey.isClosed).toBeFalsy();
+    expect(survey.isOpen).toBeTruthy();
     expect(survey.createdAt).toBeDefined();
     expect(survey.updatedAt).toBeDefined();
     expect(survey.deletedAt).toBeUndefined();
@@ -51,6 +52,7 @@ describe('Survey', () => {
     survey.close();
 
     expect(survey.isClosed).toBeTruthy();
+    expect(survey.isOpen).toBeFalsy();
   });
 
   it('Should be able to open a survey', () => {
@@ -70,33 +72,70 @@ describe('Survey', () => {
     expect(survey.isClosed).toBeFalsy();
   });
 
-  it('Should be able to change the survey title', () => {
+  it('Should be able to delete a survey', () => {
     const props = {
+      id: '123',
       title: 'Survey title',
       description: 'Survey description',
+      isClosed: true,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
-    const survey = Survey.create(props);
+    const survey = Survey.restore(props);
+
+    survey.delete();
+
+    expect(survey.deletedAt).toBeDefined();
+  });
+
+  it('Should be able to change the survey title', () => {
+    const pastDate = new Date();
+    pastDate.setHours(pastDate.getHours() - 3);
+
+    const props = {
+      id: '123',
+      title: 'Survey title',
+      description: 'Survey description',
+      isClosed: true,
+      createdAt: pastDate,
+      updatedAt: pastDate,
+    };
+
+    const survey = Survey.restore(props);
 
     const newTitle = 'Survey new title';
 
     survey.changeTitle(newTitle);
 
     expect(survey.title).toBe(newTitle);
+    expect(survey.updatedAt.getTime()).toBeGreaterThan(
+      props.updatedAt.getTime(),
+    );
   });
 
   it('Should be able to change the survey description', () => {
+    const pastDate = new Date();
+    pastDate.setHours(pastDate.getHours() - 3);
+
     const props = {
+      id: '123',
       title: 'Survey title',
       description: 'Survey description',
+      isClosed: true,
+      createdAt: pastDate,
+      updatedAt: pastDate,
     };
 
-    const survey = Survey.create(props);
+    const survey = Survey.restore(props);
 
     const newDescription = 'Survey new description';
 
     survey.changeDescription(newDescription);
 
     expect(survey.description).toBe(newDescription);
+    expect(survey.updatedAt.getTime()).toBeGreaterThan(
+      props.updatedAt.getTime(),
+    );
   });
 });
