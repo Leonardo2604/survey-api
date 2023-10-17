@@ -1,33 +1,35 @@
+import { randomUUID } from 'crypto';
+
 import { Question, QuestionProps } from './question';
 import { QuestionType } from '../enums/question-type';
-import { randomUUID } from 'crypto';
+import { QuestionOption } from './question-option';
 import { Optional } from '@/core/types/optional';
 
 interface Props {
-  isLongText: boolean;
+  options: QuestionOption[];
 }
 
-type TextQuestionProps = Optional<
+type CheckboxQuestionProps = Optional<
   Omit<QuestionProps & Props, 'type'>,
-  'isLongText'
+  'options'
 >;
 
 type NewInstance = Omit<
-  TextQuestionProps,
+  CheckboxQuestionProps,
   'id' | 'type' | 'createdAt' | 'updatedAt' | 'deletedAt'
 >;
 
-export class TextQuestion extends Question<Props> {
-  private constructor(props: TextQuestionProps) {
+export class CheckboxQuestion extends Question<Props> {
+  private constructor(props: CheckboxQuestionProps) {
     super({
       ...props,
-      isLongText: props.isLongText ?? false,
-      type: QuestionType.TEXT,
+      type: QuestionType.CHECKBOX,
+      options: props.options ?? [],
     });
   }
 
   static create(props: NewInstance) {
-    return new TextQuestion({
+    return new CheckboxQuestion({
       ...props,
       id: randomUUID(),
       createdAt: new Date(),
@@ -35,16 +37,19 @@ export class TextQuestion extends Question<Props> {
     });
   }
 
-  static restore(props: TextQuestionProps) {
-    return new TextQuestion(props);
+  static restore(props: CheckboxQuestionProps) {
+    return new CheckboxQuestion(props);
   }
 
-  get isLongText() {
-    return this.props.isLongText;
+  get options() {
+    return this.props.options;
   }
 
-  changeIsLongText(isLongText: boolean) {
-    this.props.isLongText = isLongText;
-    this.touch();
+  addOption(option: QuestionOption) {
+    this.props.options.push(option);
+  }
+
+  removeOption(option: QuestionOption) {
+    this.props.options = this.options.filter((o) => o.id !== option.id);
   }
 }

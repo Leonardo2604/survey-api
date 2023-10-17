@@ -1,6 +1,7 @@
+import { randomUUID } from 'crypto';
+
 import { Question, QuestionProps } from './question';
 import { QuestionType } from '../enums/question-type';
-import { randomUUID } from 'crypto';
 
 type EmailQuestionProps = Omit<QuestionProps, 'type'>;
 
