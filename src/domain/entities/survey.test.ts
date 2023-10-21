@@ -1,5 +1,3 @@
-import { vi } from 'vitest';
-
 import { EntityValidationError } from '@/core/errors/entity-validation-error';
 import { Survey } from './survey';
 
@@ -22,7 +20,7 @@ describe('Survey', () => {
     expect(survey.deletedAt).toBeUndefined();
   });
 
-  it('Should not be able to create a invalid survey', () => {
+  it('Should not be able to create an invalid survey', () => {
     expect(() => {
       const props = {
         title: 't'.repeat(121),

@@ -1,5 +1,8 @@
 import { Optional } from '@/core/types/optional';
 import { QuestionType } from '../enums/question-type';
+import { Entity } from '@/core/entities/entity';
+import { Validator } from '@/core/validator/validator';
+import { QuestionValidator } from '@/infra/validators/zod/question.validator';
 
 interface Props {
   id: string;
@@ -16,10 +19,12 @@ interface Props {
 
 export type QuestionProps = Optional<Props, 'required' | 'description'>;
 
-export abstract class Question<T = unknown> {
+export abstract class Question<T = unknown> extends Entity<QuestionProps & T> {
   protected props: Props & T;
 
   protected constructor(props: QuestionProps & T) {
+    super();
+
     this.props = {
       ...props,
       description: props.description ?? '',
@@ -67,6 +72,10 @@ export abstract class Question<T = unknown> {
     return this.props.deletedAt;
   }
 
+  protected get validator(): Validator<this> {
+    return new QuestionValidator();
+  }
+
   protected touch() {
     this.props.updatedAt = new Date();
   }
@@ -77,11 +86,17 @@ export abstract class Question<T = unknown> {
 
   changeTitle(title: string) {
     this.props.title = title;
+    this.validate();
     this.touch();
   }
 
   changeDescription(description: string) {
     this.props.description = description;
+    this.validate();
     this.touch();
+  }
+
+  toJSON(): QuestionProps & T {
+    return this.props;
   }
 }

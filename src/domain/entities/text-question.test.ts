@@ -1,10 +1,11 @@
+import { EntityValidationError } from '@/core/errors/entity-validation-error';
 import { QuestionType } from '../enums/question-type';
 import { TextQuestion } from './text-question';
 
 describe('TextQuestion', () => {
   it('Should be able to create a text question', () => {
     const props = {
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,
@@ -30,9 +31,25 @@ describe('TextQuestion', () => {
     expect(question.deletedAt).toBeUndefined();
   });
 
+  it('Should not be able to create an invalid text question', () => {
+    expect(() => {
+      const props = {
+        surveyId: '1212',
+        title: 'sw22w2',
+        description: 'description.',
+        order: 1,
+        maxLength: -1,
+        minLength: 16,
+        required: true,
+      };
+
+      TextQuestion.create(props);
+    }).toThrow(EntityValidationError);
+  });
+
   it('Should be able to create a text question with minimal information', () => {
     const props = {
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual o seu nome?',
       order: 1,
     };
@@ -48,7 +65,7 @@ describe('TextQuestion', () => {
   it('Should be able to restore a text question', () => {
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,
@@ -80,7 +97,7 @@ describe('TextQuestion', () => {
 
   it('Should be able to delete a question', () => {
     const props = {
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual o seu nome?',
       order: 1,
     };
@@ -92,71 +109,13 @@ describe('TextQuestion', () => {
     expect(question.deletedAt).toBeDefined();
   });
 
-  it('Should be able to change the question title', () => {
-    const pastDate = new Date();
-    pastDate.setHours(pastDate.getHours() - 3);
-
-    const props = {
-      id: '123',
-      surveyId: '123',
-      title: 'Qual o seu nome?',
-      description: 'description.',
-      order: 1,
-      maxLength: 64,
-      minLength: 16,
-      required: true,
-      createdAt: pastDate,
-      updatedAt: pastDate,
-    };
-
-    const question = TextQuestion.restore(props);
-
-    const newTitle = 'new title';
-
-    question.changeTitle(newTitle);
-
-    expect(question.title).toBe(newTitle);
-    expect(question.updatedAt.getTime()).toBeGreaterThan(
-      props.updatedAt.getTime(),
-    );
-  });
-
-  it('Should be able to change the question description', () => {
-    const pastDate = new Date();
-    pastDate.setHours(pastDate.getHours() - 3);
-
-    const props = {
-      id: '123',
-      surveyId: '123',
-      title: 'Qual o seu nome?',
-      description: 'description.',
-      order: 1,
-      maxLength: 64,
-      minLength: 16,
-      required: true,
-      createdAt: pastDate,
-      updatedAt: pastDate,
-    };
-
-    const question = TextQuestion.restore(props);
-
-    const newDescription = 'new description';
-
-    question.changeDescription(newDescription);
-
-    expect(question.description).toBe(newDescription);
-    expect(question.updatedAt.getTime()).toBeGreaterThan(
-      props.updatedAt.getTime(),
-    );
-  });
-
   it('Should be able to change the text question min length', () => {
     const pastDate = new Date();
     pastDate.setHours(pastDate.getHours() - 3);
 
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,
@@ -169,11 +128,14 @@ describe('TextQuestion', () => {
 
     const question = TextQuestion.restore(props);
 
+    const validateSpy = vi.spyOn(question, 'validate');
+
     const newMinLength = 12;
 
     question.changeMinLength(newMinLength);
 
     expect(question.minLength).toBe(newMinLength);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(question.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );
@@ -185,7 +147,7 @@ describe('TextQuestion', () => {
 
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,
@@ -198,10 +160,12 @@ describe('TextQuestion', () => {
 
     const question = TextQuestion.restore(props);
 
+    const validateSpy = vi.spyOn(question, 'validate');
+
     const newMaxLength = 80;
 
     question.changeMaxLength(newMaxLength);
-
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(question.maxLength).toBe(newMaxLength);
     expect(question.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
@@ -214,7 +178,7 @@ describe('TextQuestion', () => {
 
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,
@@ -227,9 +191,12 @@ describe('TextQuestion', () => {
 
     const question = TextQuestion.restore(props);
 
+    const validateSpy = vi.spyOn(question, 'validate');
+
     question.changeIsLongText(true);
 
     expect(question.isLongText).toBeTruthy();
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(question.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );

@@ -1,5 +1,4 @@
 import { Entity } from '@/core/entities/entity';
-import { EntityValidationError } from '@/core/errors/entity-validation-error';
 import { Validator } from '@/core/validator/validator';
 import { SurveyValidator } from '@/infra/validators/zod/survey.validator';
 import { randomUUID } from 'node:crypto';
@@ -21,13 +20,11 @@ type NewInstance = Omit<
 
 export class Survey extends Entity<Props> {
   private props: Props;
-  private validator: Validator<Survey>;
 
   private constructor(props: Props) {
     super();
 
     this.props = { ...props };
-    this.validator = new SurveyValidator();
   }
 
   static create(props: NewInstance) {
@@ -80,6 +77,10 @@ export class Survey extends Entity<Props> {
     return this.props.deletedAt;
   }
 
+  protected get validator(): Validator<this> {
+    return new SurveyValidator();
+  }
+
   private touch() {
     this.props.updatedAt = new Date();
   }
@@ -108,14 +109,6 @@ export class Survey extends Entity<Props> {
     this.props.description = description;
     this.validate();
     this.touch();
-  }
-
-  validate() {
-    const validation = this.validator.validate(this);
-
-    if (validation.failed) {
-      throw new EntityValidationError(validation.errors);
-    }
   }
 
   toJSON(): Props {
