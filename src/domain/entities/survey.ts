@@ -113,8 +113,8 @@ export class Survey extends Entity<Props> {
   validate() {
     const validation = this.validator.validate(this);
 
-    if (validation.failed()) {
-      throw new EntityValidationError(validation.getErrors());
+    if (validation.failed) {
+      throw new EntityValidationError(validation.errors);
     }
   }
 

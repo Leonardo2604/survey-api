@@ -3,13 +3,13 @@ import { AppError } from './app-error';
 
 export class EntityValidationError extends AppError {
   constructor(
-    private errors: ValidationError[],
+    private _errors: ValidationError[],
     message = 'Validation fails',
   ) {
     super(message);
   }
 
-  getErrors() {
-    return this.errors;
+  get errors() {
+    return this._errors;
   }
 }

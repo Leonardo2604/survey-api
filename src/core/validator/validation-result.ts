@@ -1,7 +1,7 @@
 import { ValidationError } from './validation-error';
 
 export class ValidationResult {
-  private constructor(private errors: ValidationError[]) {}
+  private constructor(private _errors: ValidationError[]) {}
 
   static success() {
     return new ValidationResult([]);
@@ -11,11 +11,11 @@ export class ValidationResult {
     return new ValidationResult(errors);
   }
 
-  getErrors(): ValidationError[] {
-    return this.errors;
+  get errors(): ValidationError[] {
+    return this._errors;
   }
 
-  failed(): boolean {
+  get failed(): boolean {
     return this.errors.length > 0;
   }
 }
