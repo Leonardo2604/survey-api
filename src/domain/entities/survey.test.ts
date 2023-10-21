@@ -1,3 +1,6 @@
+import { vi } from 'vitest';
+
+import { EntityValidationError } from '@/core/errors/entity-validation-error';
 import { Survey } from './survey';
 
 describe('Survey', () => {
@@ -17,6 +20,17 @@ describe('Survey', () => {
     expect(survey.createdAt).toBeDefined();
     expect(survey.updatedAt).toBeDefined();
     expect(survey.deletedAt).toBeUndefined();
+  });
+
+  it('Should not be able to create a invalid survey', () => {
+    expect(() => {
+      const props = {
+        title: 't'.repeat(121),
+        description: 'd'.repeat(257),
+      };
+
+      Survey.create(props);
+    }).toThrow(EntityValidationError);
   });
 
   it('Should be able to restore a survey', () => {
@@ -104,11 +118,14 @@ describe('Survey', () => {
 
     const survey = Survey.restore(props);
 
+    const validateSpy = vi.spyOn(survey, 'validate');
+
     const newTitle = 'Survey new title';
 
     survey.changeTitle(newTitle);
 
     expect(survey.title).toBe(newTitle);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(survey.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );
@@ -129,11 +146,14 @@ describe('Survey', () => {
 
     const survey = Survey.restore(props);
 
+    const validateSpy = vi.spyOn(survey, 'validate');
+
     const newDescription = 'Survey new description';
 
     survey.changeDescription(newDescription);
 
     expect(survey.description).toBe(newDescription);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(survey.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );
