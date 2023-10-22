@@ -57,7 +57,7 @@ describe('CheckboxQuestion', () => {
 
   it('Should be able to add a question option', () => {
     const props = {
-      id: '123',
+      id: '75ec07ce-5b76-4baa-87bd-fb40bce984e5',
       surveyId: '123',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
@@ -84,7 +84,7 @@ describe('CheckboxQuestion', () => {
 
   it('Should be able to remove a question option', () => {
     const props = {
-      id: '123',
+      id: '75ec07ce-5b76-4baa-87bd-fb40bce984e5',
       surveyId: '123',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',

@@ -1,9 +1,10 @@
+import { EntityValidationError } from '@/core/errors/entity-validation-error';
 import { QuestionOption } from './question-option';
 
 describe('QuestionOption', () => {
   it('Should be able to create a question option', () => {
     const props = {
-      questionId: '123',
+      questionId: '75ec07ce-5b76-4baa-87bd-fb40bce984e5',
       title: 'Option 1',
       value: '1',
       order: 1,
@@ -21,7 +22,20 @@ describe('QuestionOption', () => {
     expect(option.deletedAt).toBeUndefined();
   });
 
-  it('Should be able to restore a color question', () => {
+  it('Should not be able to create an invalid question option', () => {
+    expect(() => {
+      const props = {
+        questionId: '1212212',
+        title: 'Option 1',
+        value: '2121221',
+        order: -2,
+      };
+
+      QuestionOption.create(props);
+    }).toThrow(EntityValidationError);
+  });
+
+  it('Should be able to restore a question option', () => {
     const props = {
       id: '123',
       questionId: '123',
@@ -61,11 +75,14 @@ describe('QuestionOption', () => {
 
     const option = QuestionOption.restore(props);
 
+    const validateSpy = vi.spyOn(option, 'validate');
+
     const newValue = 'Vermelho';
 
     option.changeTitle(newValue);
 
     expect(option.title).toBe(newValue);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(option.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );
@@ -87,11 +104,14 @@ describe('QuestionOption', () => {
 
     const option = QuestionOption.restore(props);
 
+    const validateSpy = vi.spyOn(option, 'validate');
+
     const newValue = '3';
 
     option.changeValue(newValue);
 
     expect(option.value).toBe(newValue);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(option.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );

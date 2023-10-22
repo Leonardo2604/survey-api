@@ -72,7 +72,7 @@ describe('RadioQuestion', () => {
 
   it('Should be able to add a question option', () => {
     const props = {
-      id: '123',
+      id: '75ec07ce-5b76-4baa-87bd-fb40bce984e5',
       surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
@@ -99,7 +99,7 @@ describe('RadioQuestion', () => {
 
   it('Should be able to remove a question option', () => {
     const props = {
-      id: '123',
+      id: '75ec07ce-5b76-4baa-87bd-fb40bce984e5',
       surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
