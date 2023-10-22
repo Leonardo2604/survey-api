@@ -19,12 +19,16 @@ export class EmailQuestion extends Question {
   }
 
   static create(props: NewInstance) {
-    return new EmailQuestion({
+    const question = new EmailQuestion({
       ...props,
       id: randomUUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
+    question.validate();
+
+    return question;
   }
 
   static restore(props: EmailQuestionProps) {
