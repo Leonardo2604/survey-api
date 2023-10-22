@@ -29,12 +29,16 @@ export class RadioQuestion extends Question<Props> {
   }
 
   static create(props: NewInstance) {
-    return new RadioQuestion({
+    const question = new RadioQuestion({
       ...props,
       id: randomUUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
+    question.validate();
+
+    return question;
   }
 
   static restore(props: RadioQuestionProps) {
