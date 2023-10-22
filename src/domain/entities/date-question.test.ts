@@ -1,10 +1,11 @@
+import { EntityValidationError } from '@/core/errors/entity-validation-error';
 import { QuestionType } from '../enums/question-type';
 import { DateQuestion } from './date-question';
 
 describe('DateQuestion', () => {
   it('Should be able to create a date question', () => {
     const props = {
-      surveyId: '123',
+      surveyId: 'a07d55d5-4d45-44c7-b80c-0e7978ae40a7',
       title: 'Quando começou a trabalhar com programação?',
       description: 'description',
       order: 1,
@@ -29,10 +30,26 @@ describe('DateQuestion', () => {
     expect(question.deletedAt).toBeUndefined();
   });
 
+  it('Should not be able to create an invalid date question', () => {
+    expect(() => {
+      const props = {
+        surveyId: '1221121221',
+        title: 'Quando começou a trabalhar com programação?',
+        description: 'description',
+        order: -1,
+        max: new Date('2021-12-31'),
+        min: new Date('2010-01-01'),
+        required: true,
+      };
+
+      DateQuestion.create(props);
+    }).toThrow(EntityValidationError);
+  });
+
   it('Should be able to restore a date question', () => {
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: 'a07d55d5-4d45-44c7-b80c-0e7978ae40a7',
       title: 'Quando começou a trabalhar com programação?',
       description: 'description.',
       order: 1,
@@ -66,7 +83,7 @@ describe('DateQuestion', () => {
 
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: 'a07d55d5-4d45-44c7-b80c-0e7978ae40a7',
       title: 'Quando começou a trabalhar com programação?',
       description: 'description.',
       order: 1,
@@ -79,11 +96,14 @@ describe('DateQuestion', () => {
 
     const question = DateQuestion.restore(props);
 
+    const validateSpy = vi.spyOn(question, 'validate');
+
     const newMin = new Date('2015-01-01');
 
     question.changeMin(newMin);
 
     expect(question.min?.getTime()).toBe(newMin.getTime());
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(question.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );
@@ -95,7 +115,7 @@ describe('DateQuestion', () => {
 
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: 'a07d55d5-4d45-44c7-b80c-0e7978ae40a7',
       title: 'Quando começou a trabalhar com programação?',
       description: 'description.',
       order: 1,
@@ -108,11 +128,14 @@ describe('DateQuestion', () => {
 
     const question = DateQuestion.restore(props);
 
+    const validateSpy = vi.spyOn(question, 'validate');
+
     const newMax = new Date('2020-12-31');
 
     question.changeMax(newMax);
 
     expect(question.max?.getTime()).toBe(newMax.getTime());
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(question.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );
