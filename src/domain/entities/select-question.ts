@@ -29,12 +29,16 @@ export class SelectQuestion extends Question<Props> {
   }
 
   static create(props: NewInstance) {
-    return new SelectQuestion({
+    const question = new SelectQuestion({
       ...props,
       id: randomUUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
+    question.validate();
+
+    return question;
   }
 
   static restore(props: SelectQuestionProps) {

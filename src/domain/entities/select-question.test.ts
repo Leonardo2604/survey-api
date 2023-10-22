@@ -1,11 +1,12 @@
 import { QuestionType } from '../enums/question-type';
 import { SelectQuestion } from './select-question';
 import { QuestionOption } from './question-option';
+import { EntityValidationError } from '@/core/errors/entity-validation-error';
 
 describe('SelectQuestion', () => {
   it('Should be able to create a select question', () => {
     const props = {
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
       order: 1,
@@ -30,7 +31,7 @@ describe('SelectQuestion', () => {
   it('Should be able to restore a select question', () => {
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
       order: 1,
@@ -55,10 +56,24 @@ describe('SelectQuestion', () => {
     expect(question.deletedAt?.getTime()).toBe(props.deletedAt.getTime());
   });
 
+  it('Should not be able to create an invalid select question', () => {
+    expect(() => {
+      const props = {
+        surveyId: '22222',
+        title: 'Qual a cor deve aparecer no banner?',
+        description: 'description.',
+        order: -1,
+        required: true,
+      };
+
+      SelectQuestion.create(props);
+    }).toThrow(EntityValidationError);
+  });
+
   it('Should be able to add a question option', () => {
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
       order: 1,
@@ -85,7 +100,7 @@ describe('SelectQuestion', () => {
   it('Should be able to remove a question option', () => {
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
       order: 1,
