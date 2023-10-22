@@ -1,10 +1,11 @@
+import { EntityValidationError } from '@/core/errors/entity-validation-error';
 import { QuestionType } from '../enums/question-type';
 import { ColorQuestion } from './color-question';
 
 describe('ColorQuestion', () => {
   it('Should be able to create a color question', () => {
     const props = {
-      surveyId: '123',
+      surveyId: 'cc4c6b6f-cf44-40d0-8a88-7961b6bfd03e',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
       order: 1,
@@ -25,10 +26,24 @@ describe('ColorQuestion', () => {
     expect(question.deletedAt).toBeUndefined();
   });
 
+  it('Should not be able to create an invalid color question', () => {
+    expect(() => {
+      const props = {
+        surveyId: '12121212',
+        title: 'Qual a cor deve aparecer no banner?',
+        description: 'description.',
+        order: -1,
+        required: true,
+      };
+
+      ColorQuestion.create(props);
+    }).toThrow(EntityValidationError);
+  });
+
   it('Should be able to restore a color question', () => {
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: 'cc4c6b6f-cf44-40d0-8a88-7961b6bfd03e',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
       order: 1,

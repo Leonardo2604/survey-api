@@ -19,12 +19,16 @@ export class ColorQuestion extends Question {
   }
 
   static create(props: NewInstance) {
-    return new ColorQuestion({
+    const question = new ColorQuestion({
       ...props,
       id: randomUUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
+    question.validate();
+
+    return question;
   }
 
   static restore(props: ColorQuestionProps) {
