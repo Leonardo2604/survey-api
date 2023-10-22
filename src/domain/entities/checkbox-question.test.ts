@@ -1,3 +1,4 @@
+import { EntityValidationError } from '@/core/errors/entity-validation-error';
 import { QuestionType } from '../enums/question-type';
 import { CheckboxQuestion } from './checkbox-question';
 import { QuestionOption } from './question-option';
@@ -5,7 +6,7 @@ import { QuestionOption } from './question-option';
 describe('CheckboxQuestion', () => {
   it('Should be able to create a checkbox question', () => {
     const props = {
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
       order: 1,
@@ -27,10 +28,24 @@ describe('CheckboxQuestion', () => {
     expect(question.deletedAt).toBeUndefined();
   });
 
+  it('Should not be able to create an invalid checkbox question', () => {
+    expect(() => {
+      const props = {
+        surveyId: '121221',
+        title: 'Qual a cor deve aparecer no banner?',
+        description: 'description.',
+        order: -1,
+        required: true,
+      };
+
+      CheckboxQuestion.create(props);
+    }).toThrow(EntityValidationError);
+  });
+
   it('Should be able to restore a checkbox question', () => {
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
       order: 1,
@@ -58,7 +73,7 @@ describe('CheckboxQuestion', () => {
   it('Should be able to add a question option', () => {
     const props = {
       id: '75ec07ce-5b76-4baa-87bd-fb40bce984e5',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
       order: 1,
@@ -85,7 +100,7 @@ describe('CheckboxQuestion', () => {
   it('Should be able to remove a question option', () => {
     const props = {
       id: '75ec07ce-5b76-4baa-87bd-fb40bce984e5',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Qual a cor deve aparecer no banner?',
       description: 'description.',
       order: 1,
