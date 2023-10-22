@@ -65,7 +65,7 @@ describe('QuestionOption', () => {
 
     const props = {
       id: '123',
-      questionId: '123',
+      questionId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Option 1',
       value: '1',
       order: 1,
@@ -94,7 +94,7 @@ describe('QuestionOption', () => {
 
     const props = {
       id: '123',
-      questionId: '123',
+      questionId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Option 1',
       value: '1',
       order: 1,
@@ -123,7 +123,7 @@ describe('QuestionOption', () => {
 
     const props = {
       id: '123',
-      questionId: '123',
+      questionId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Option 1',
       value: '1',
       order: 1,

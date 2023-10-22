@@ -84,11 +84,13 @@ export class QuestionOption extends Entity<Props> {
 
   changeTitle(title: string) {
     this.props.title = title;
+    this.validate();
     this.touch();
   }
 
   changeValue(value: string) {
     this.props.value = value;
+    this.validate();
     this.touch();
   }
 
