@@ -1,10 +1,11 @@
+import { EntityValidationError } from '@/core/errors/entity-validation-error';
 import { QuestionType } from '../enums/question-type';
 import { TimeQuestion } from './time-question';
 
 describe('TimeQuestion', () => {
   it('Should be able to create a time question', () => {
     const props = {
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Que horas gostaria de ser atendido?',
       description: 'description',
       order: 1,
@@ -29,10 +30,26 @@ describe('TimeQuestion', () => {
     expect(question.deletedAt).toBeUndefined();
   });
 
+  it('Should not be able to create an invalid time question', () => {
+    expect(() => {
+      const props = {
+        surveyId: '21221',
+        title: 'Que horas gostaria de ser atendido?',
+        description: 'description',
+        order: 1,
+        min: '1',
+        max: '1',
+        required: true,
+      };
+
+      TimeQuestion.create(props);
+    }).toThrow(EntityValidationError);
+  });
+
   it('Should be able to restore a time question', () => {
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Que horas gostaria de ser atendido?',
       description: 'description.',
       order: 1,
@@ -66,7 +83,7 @@ describe('TimeQuestion', () => {
 
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Que horas gostaria de ser atendido?',
       description: 'description.',
       order: 1,
@@ -81,9 +98,12 @@ describe('TimeQuestion', () => {
 
     const newMin = '08:00';
 
+    const validateSpy = vi.spyOn(question, 'validate');
+
     question.changeMin(newMin);
 
     expect(question.min).toBe(newMin);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(question.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );
@@ -95,7 +115,7 @@ describe('TimeQuestion', () => {
 
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Que horas gostaria de ser atendido?',
       description: 'description.',
       order: 1,
@@ -108,11 +128,14 @@ describe('TimeQuestion', () => {
 
     const question = TimeQuestion.restore(props);
 
+    const validateSpy = vi.spyOn(question, 'validate');
+
     const newMax = '17:00';
 
     question.changeMax(newMax);
 
     expect(question.max).toBe(newMax);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(question.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );

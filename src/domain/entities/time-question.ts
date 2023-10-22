@@ -2,6 +2,8 @@ import { randomUUID } from 'crypto';
 
 import { Question, QuestionProps } from './question';
 import { QuestionType } from '../enums/question-type';
+import { Validator } from '@/core/validator/validator';
+import { TimeQuestionValidator } from '@/infra/validators/zod/time-question.validator';
 
 interface Props {
   min?: string;
@@ -24,16 +26,24 @@ export class TimeQuestion extends Question<Props> {
   }
 
   static create(props: NewInstance) {
-    return new TimeQuestion({
+    const question = new TimeQuestion({
       ...props,
       id: randomUUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
+
+    question.validate();
+
+    return question;
   }
 
   static restore(props: TimeQuestionProps) {
     return new TimeQuestion(props);
+  }
+
+  protected get validator(): Validator<TimeQuestion> {
+    return new TimeQuestionValidator();
   }
 
   get min() {
@@ -46,11 +56,13 @@ export class TimeQuestion extends Question<Props> {
 
   changeMin(min?: string) {
     this.props.min = min;
+    this.validate();
     this.touch();
   }
 
   changeMax(max?: string) {
     this.props.max = max;
+    this.validate();
     this.touch();
   }
 }
