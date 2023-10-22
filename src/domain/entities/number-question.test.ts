@@ -1,10 +1,11 @@
+import { EntityValidationError } from '@/core/errors/entity-validation-error';
 import { QuestionType } from '../enums/question-type';
 import { NumberQuestion } from './number-question';
 
 describe('NumberQuestion', () => {
   it('Should be able to create a number question', () => {
     const props = {
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Quantas linguagens de programação você sabe?',
       description: 'description',
       order: 1,
@@ -29,10 +30,26 @@ describe('NumberQuestion', () => {
     expect(question.deletedAt).toBeUndefined();
   });
 
+  it('Should not be able to create an invalid number question', () => {
+    expect(() => {
+      const props = {
+        surveyId: '12122112',
+        title: 'Quantas linguagens de programação você sabe?',
+        description: 'description',
+        order: -1,
+        max: -1,
+        min: -12,
+        required: true,
+      };
+
+      NumberQuestion.create(props);
+    }).toThrow(EntityValidationError);
+  });
+
   it('Should be able to restore a number question', () => {
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Quantas linguagens de programação você sabe?',
       description: 'description.',
       order: 1,
@@ -66,7 +83,7 @@ describe('NumberQuestion', () => {
 
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Quantas linguagens de programação você sabe?',
       description: 'description.',
       order: 1,
@@ -79,11 +96,14 @@ describe('NumberQuestion', () => {
 
     const question = NumberQuestion.restore(props);
 
+    const validateSpy = vi.spyOn(question, 'validate');
+
     const newMin = 12;
 
     question.changeMin(newMin);
 
     expect(question.min).toBe(newMin);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(question.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );
@@ -95,7 +115,7 @@ describe('NumberQuestion', () => {
 
     const props = {
       id: '123',
-      surveyId: '123',
+      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
       title: 'Quantas linguagens de programação você sabe?',
       description: 'description.',
       order: 1,
@@ -108,11 +128,14 @@ describe('NumberQuestion', () => {
 
     const question = NumberQuestion.restore(props);
 
+    const validateSpy = vi.spyOn(question, 'validate');
+
     const newMax = 80;
 
     question.changeMax(newMax);
 
     expect(question.max).toBe(newMax);
+    expect(validateSpy).toHaveBeenCalledTimes(1);
     expect(question.updatedAt.getTime()).toBeGreaterThan(
       props.updatedAt.getTime(),
     );
