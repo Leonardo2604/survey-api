@@ -1,9 +1,8 @@
-import { randomUUID } from 'node:crypto';
-
 import { Question, QuestionProps } from './question';
 import { QuestionType } from '../enums/question-type';
 import { DateQuestionValidator } from '@/infra/validators/zod/date-question.validator';
 import { Validator } from '@/core/validator/validator';
+import { UUID } from '@/core/value-objects/uuid.ov';
 
 interface Props {
   min?: Date;
@@ -28,7 +27,7 @@ export class DateQuestion extends Question<Props> {
   static create(props: NewInstance) {
     const question = new DateQuestion({
       ...props,
-      id: randomUUID(),
+      id: new UUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });

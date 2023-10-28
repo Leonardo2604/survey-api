@@ -3,10 +3,11 @@ import { QuestionType } from '../enums/question-type';
 import { Entity } from '@/core/entities/entity';
 import { Validator } from '@/core/validator/validator';
 import { QuestionValidator } from '@/infra/validators/zod/question.validator';
+import { UUID } from '@/core/value-objects/uuid.ov';
 
 interface Props {
-  id: string;
-  surveyId: string;
+  id: UUID;
+  surveyId: UUID;
   title: string;
   description: string;
   type: QuestionType;
@@ -94,6 +95,10 @@ export abstract class Question<T = unknown> extends Entity<QuestionProps & T> {
     this.props.description = description;
     this.validate();
     this.touch();
+  }
+
+  getIdentity(): UUID {
+    return this.props.id;
   }
 
   toJSON(): QuestionProps & T {

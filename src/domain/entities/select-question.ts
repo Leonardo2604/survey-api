@@ -1,9 +1,8 @@
-import { randomUUID } from 'crypto';
-
 import { Question, QuestionProps } from './question';
 import { QuestionType } from '../enums/question-type';
 import { QuestionOption } from './question-option';
 import { Optional } from '@/core/types/optional';
+import { UUID } from '@/core/value-objects/uuid.ov';
 
 interface Props {
   options: QuestionOption[];
@@ -31,7 +30,7 @@ export class SelectQuestion extends Question<Props> {
   static create(props: NewInstance) {
     const question = new SelectQuestion({
       ...props,
-      id: randomUUID(),
+      id: new UUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });

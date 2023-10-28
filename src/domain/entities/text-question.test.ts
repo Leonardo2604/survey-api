@@ -1,11 +1,12 @@
 import { EntityValidationError } from '@/core/errors/entity-validation-error';
 import { QuestionType } from '../enums/question-type';
 import { TextQuestion } from './text-question';
+import { UUID } from '@/core/value-objects/uuid.ov';
 
 describe('TextQuestion', () => {
   it('Should be able to create a text question', () => {
     const props = {
-      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
+      surveyId: new UUID(),
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,
@@ -34,7 +35,7 @@ describe('TextQuestion', () => {
   it('Should not be able to create an invalid text question', () => {
     expect(() => {
       const props = {
-        surveyId: '1212',
+        surveyId: new UUID(),
         title: 'sw22w2',
         description: 'description.',
         order: 1,
@@ -49,7 +50,7 @@ describe('TextQuestion', () => {
 
   it('Should be able to create a text question with minimal information', () => {
     const props = {
-      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
+      surveyId: new UUID(),
       title: 'Qual o seu nome?',
       order: 1,
     };
@@ -64,8 +65,8 @@ describe('TextQuestion', () => {
 
   it('Should be able to restore a text question', () => {
     const props = {
-      id: '123',
-      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
+      id: new UUID(),
+      surveyId: new UUID(),
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,
@@ -97,7 +98,7 @@ describe('TextQuestion', () => {
 
   it('Should be able to delete a question', () => {
     const props = {
-      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
+      surveyId: new UUID(),
       title: 'Qual o seu nome?',
       order: 1,
     };
@@ -114,8 +115,8 @@ describe('TextQuestion', () => {
     pastDate.setHours(pastDate.getHours() - 3);
 
     const props = {
-      id: '123',
-      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
+      id: new UUID(),
+      surveyId: new UUID(),
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,
@@ -146,8 +147,8 @@ describe('TextQuestion', () => {
     pastDate.setHours(pastDate.getHours() - 3);
 
     const props = {
-      id: '123',
-      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
+      id: new UUID(),
+      surveyId: new UUID(),
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,
@@ -177,8 +178,8 @@ describe('TextQuestion', () => {
     pastDate.setHours(pastDate.getHours() - 3);
 
     const props = {
-      id: '123',
-      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
+      id: new UUID(),
+      surveyId: new UUID(),
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,

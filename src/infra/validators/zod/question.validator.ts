@@ -10,7 +10,6 @@ export class QuestionValidator extends ZodValidator<Question> {
       title: z.string().max(120),
       description: z.string().max(256),
       order: z.number().min(0),
-      surveyId: z.string().uuid(),
       type: z.nativeEnum(QuestionType),
       required: z.boolean(),
     });

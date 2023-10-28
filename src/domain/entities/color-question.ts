@@ -1,7 +1,6 @@
-import { randomUUID } from 'crypto';
-
 import { Question, QuestionProps } from './question';
 import { QuestionType } from '../enums/question-type';
+import { UUID } from '@/core/value-objects/uuid.ov';
 
 type ColorQuestionProps = Omit<QuestionProps, 'type'>;
 
@@ -21,7 +20,7 @@ export class ColorQuestion extends Question {
   static create(props: NewInstance) {
     const question = new ColorQuestion({
       ...props,
-      id: randomUUID(),
+      id: new UUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });

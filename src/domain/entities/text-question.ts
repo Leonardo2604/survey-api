@@ -1,10 +1,9 @@
-import { randomUUID } from 'crypto';
-
 import { Question, QuestionProps } from './question';
 import { QuestionType } from '../enums/question-type';
 import { Optional } from '@/core/types/optional';
 import { TextQuestionValidator } from '@/infra/validators/zod/text-question.validator';
 import { Validator } from '@/core/validator/validator';
+import { UUID } from '@/core/value-objects/uuid.ov';
 
 interface Props {
   isLongText: boolean;
@@ -34,7 +33,7 @@ export class TextQuestion extends Question<Props> {
   static create(props: NewInstance) {
     const question = new TextQuestion({
       ...props,
-      id: randomUUID(),
+      id: new UUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });

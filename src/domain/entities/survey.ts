@@ -1,10 +1,10 @@
 import { Entity } from '@/core/entities/entity';
 import { Validator } from '@/core/validator/validator';
+import { UUID } from '@/core/value-objects/uuid.ov';
 import { SurveyValidator } from '@/infra/validators/zod/survey.validator';
-import { randomUUID } from 'node:crypto';
 
 export interface Props {
-  id: string;
+  id: UUID;
   title: string;
   description: string;
   isClosed: boolean;
@@ -30,7 +30,7 @@ export class Survey extends Entity<Props> {
   static create(props: NewInstance) {
     const entity = new Survey({
       ...props,
-      id: randomUUID(),
+      id: new UUID(),
       isClosed: false,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -109,6 +109,10 @@ export class Survey extends Entity<Props> {
     this.props.description = description;
     this.validate();
     this.touch();
+  }
+
+  getIdentity(): UUID {
+    return this.props.id;
   }
 
   toJSON(): Props {

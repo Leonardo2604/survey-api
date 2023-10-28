@@ -1,3 +1,4 @@
+import { UUID } from '@/core/value-objects/uuid.ov';
 import { QuestionType } from '../enums/question-type';
 import { Question, QuestionProps } from './question';
 
@@ -10,8 +11,8 @@ class Stub extends Question {
 describe('Question', () => {
   it('Should be able to create a question', () => {
     const props = {
-      id: '123',
-      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
+      id: new UUID(),
+      surveyId: new UUID(),
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,
@@ -41,8 +42,8 @@ describe('Question', () => {
     pastDate.setHours(pastDate.getHours() - 3);
 
     const props = {
-      id: '123',
-      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
+      id: new UUID(),
+      surveyId: new UUID(),
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,
@@ -70,8 +71,8 @@ describe('Question', () => {
     pastDate.setHours(pastDate.getHours() - 3);
 
     const props = {
-      id: '123',
-      surveyId: '9cf621ec-6f6c-43f7-8dd8-6e4872933018',
+      id: new UUID(),
+      surveyId: new UUID(),
       title: 'Qual o seu nome?',
       description: 'description.',
       order: 1,

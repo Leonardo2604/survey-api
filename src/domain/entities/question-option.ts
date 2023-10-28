@@ -1,11 +1,11 @@
 import { Entity } from '@/core/entities/entity';
 import { Validator } from '@/core/validator/validator';
+import { UUID } from '@/core/value-objects/uuid.ov';
 import { QuestionOptionValidator } from '@/infra/validators/zod/question-option.validator';
-import { randomUUID } from 'crypto';
 
 interface Props {
-  id: string;
-  questionId: string;
+  id: UUID;
+  questionId: UUID;
   title: string;
   value: string;
   order: number;
@@ -28,7 +28,7 @@ export class QuestionOption extends Entity<Props> {
   static create(props: NewInstance) {
     const option = new QuestionOption({
       ...props,
-      id: randomUUID(),
+      id: new UUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -96,6 +96,10 @@ export class QuestionOption extends Entity<Props> {
 
   delete() {
     this.props.deletedAt = new Date();
+  }
+
+  getIdentity(): UUID {
+    return this.props.id;
   }
 
   toJSON(): Props {

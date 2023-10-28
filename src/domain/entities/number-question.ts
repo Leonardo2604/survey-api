@@ -1,9 +1,8 @@
-import { randomUUID } from 'crypto';
-
 import { Question, QuestionProps } from './question';
 import { QuestionType } from '../enums/question-type';
 import { Validator } from '@/core/validator/validator';
 import { NumberQuestionValidator } from '@/infra/validators/zod/number-question.validator';
+import { UUID } from '@/core/value-objects/uuid.ov';
 
 interface Props {
   min?: number;
@@ -28,7 +27,7 @@ export class NumberQuestion extends Question<Props> {
   static create(props: NewInstance) {
     const question = new NumberQuestion({
       ...props,
-      id: randomUUID(),
+      id: new UUID(),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
