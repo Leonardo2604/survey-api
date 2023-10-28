@@ -2,12 +2,14 @@ import { Entity } from '@/core/entities/entity';
 import { Validator } from '@/core/validator/validator';
 import { UUID } from '@/core/value-objects/uuid.ov';
 import { SurveyValidator } from '@/infra/validators/zod/survey.validator';
+import { Question } from './question';
 
 export interface Props {
   id: UUID;
   title: string;
   description: string;
   isClosed: boolean;
+  questions: Question[];
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
@@ -57,6 +59,10 @@ export class Survey extends Entity<Props> {
     return this.props.description;
   }
 
+  get questions() {
+    return this.props.questions;
+  }
+
   get isClosed() {
     return this.props.isClosed;
   }
@@ -93,6 +99,16 @@ export class Survey extends Entity<Props> {
   close() {
     this.props.isClosed = true;
     this.touch();
+  }
+
+  addQuestion(question: Question) {
+    this.props.questions.push(question);
+  }
+
+  removeQuestion(question: Question) {
+    this.props.questions = this.props.questions.filter(
+      (q) => q.id !== question.id,
+    );
   }
 
   delete() {
